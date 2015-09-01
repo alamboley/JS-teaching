@@ -25,7 +25,7 @@ function _addedToStage(data) {
     this.drawRect(0, 0, 20, 150);
     this.endFill();
 
-    this.x = this._isPlayerLeft ? 15 : renderer.width - this.width - 15;;
+    this.x = this._isPlayerLeft ? 15 : renderer.width - this.width - 15;
     this.y = (renderer.height - this.height) / 2;
 
     if (this._isPlayerLeft)

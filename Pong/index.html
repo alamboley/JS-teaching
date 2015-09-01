@@ -11,14 +11,14 @@
     </style>
 </head>
 <body>
-    <script type="text/javascript" src="js/pixi.js"></script>
+    <script type="text/javascript" src="../lib/pixi.js"></script>
     <script type="text/javascript" src="js/Main.js"></script>
     <script type="text/javascript" src="js/objects/Ball.js"></script>
     <script type="text/javascript" src="js/objects/Player.js"></script>
 
     <script type="text/javascript">
 
-        var renderer = PIXI.autoDetectRenderer(800, 600,{backgroundColor : 0x1099bb});
+        var renderer = PIXI.autoDetectRenderer(800, 600, {backgroundColor:0x1099bb});
         document.body.appendChild(renderer.view);
 
         var stage = new PIXI.Container();
