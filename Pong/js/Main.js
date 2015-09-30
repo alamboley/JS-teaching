@@ -19,7 +19,7 @@ function Main() {
     this.addChild(this.scorePlayerLeft);
     this.addChild(this.scorePlayerRight);
 
-    _addBall.bind(this)();
+    this._addBall();
 }
 
 Main.prototype = Object.create(PIXI.Container.prototype);
@@ -31,11 +31,11 @@ Main.prototype.update = function() {
     this.ball.updateBall();
 };
 
-function _addBall() {
+Main.prototype._addBall = function () {
 
     this.ball = new Ball(this.playerLeft, this.playerRight);
-    this.ball.x = (renderer.width - this.ball.width) / 2;
-    this.ball.y = (renderer.height - this.ball.height) / 2;
+    this.ball.x = renderer.width / 2;
+    this.ball.y = renderer.height / 2;
     this.addChild(this.ball);
 
     this.ball.addListener("win", _win.bind(this));
@@ -51,5 +51,5 @@ function _win(data) {
     else
         this.scorePlayerRight.text = parseInt(this.scorePlayerRight.text) + 1;
 
-    _addBall.bind(this)();
+    this._addBall();
 }

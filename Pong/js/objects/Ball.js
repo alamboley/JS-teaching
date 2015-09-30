@@ -30,7 +30,7 @@ Ball.prototype.updateBall = function() {
 
             this._movingToLeft = false;
 
-            _changeYBall.bind(this)(this._playerLeft);
+            this._changeYBall(this._playerLeft);
         }
 
     } else {
@@ -39,7 +39,7 @@ Ball.prototype.updateBall = function() {
 
             this._movingToLeft = true;
 
-            _changeYBall.bind(this)(this._playerRight);
+            this._changeYBall(this._playerRight);
         }
     }
 
@@ -59,7 +59,7 @@ Ball.prototype.updateBall = function() {
     }
 };
 
-function _changeYBall(player) {
+Ball.prototype._changeYBall = function(player) {
 
     if (this.y > player.y + player.height * 0.75)
         this._velocityY = 10;
