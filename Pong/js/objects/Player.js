@@ -44,10 +44,10 @@ function _mouseMoveCallback(mouseData) {
 
 function _keyDownCallback(keyData) {
 
-    if (keyData.keyCode == KeyboardEvent.DOM_VK_UP)
+    if (keyData.keyCode == 38)
         this._moveUp = keyData.type == "keydown";
 
-    else if (keyData.keyCode == KeyboardEvent.DOM_VK_DOWN)
+    else if (keyData.keyCode == 40)
         this._moveDown = keyData.type == "keydown";
 }
 

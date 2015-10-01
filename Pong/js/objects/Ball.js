@@ -26,7 +26,7 @@ Ball.prototype.updateBall = function() {
 
     if (this._movingToLeft) {
 
-        if (hitTest(this._playerLeft.x, this._playerLeft.y, this._playerLeft.width, this._playerLeft.height, this.x - this.width / 2, this.y, this.width, this.height)) {
+        if (hitTest(this._playerLeft.x, this._playerLeft.y, this._playerLeft.width, this._playerLeft.height, this.x - this.width / 2, this.y - this.height / 2, this.width, this.height)) {
 
             this._movingToLeft = false;
 
@@ -35,7 +35,7 @@ Ball.prototype.updateBall = function() {
 
     } else {
 
-        if (hitTest(this._playerRight.x, this._playerRight.y, this._playerRight.width, this._playerRight.height, this.x - this.width / 2, this.y, this.width, this.height)) {
+        if (hitTest(this._playerRight.x, this._playerRight.y, this._playerRight.width, this._playerRight.height, this.x - this.width / 2, this.y - this.height / 2, this.width, this.height)) {
 
             this._movingToLeft = true;
 
