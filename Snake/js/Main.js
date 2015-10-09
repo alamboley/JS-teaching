@@ -9,22 +9,22 @@ function Main() {
     this._snake = new Snake(this._grid.gridTab);
     this.addChild(this._snake);
 
-    this._snake.addListener("GAME_OVER", _gameOver.bind(this));
+    this._snake.addListener("GAME_OVER", this._gameOver.bind(this));
 
-    this._interval = window.setInterval(_onTick.bind(this), 100);
-    window.addEventListener('keydown', _keyDownCallback.bind(this));
+    this._interval = window.setInterval(this._onTick.bind(this), 100);
+    window.addEventListener('keydown', this._keyDownCallback.bind(this));
 }
 
 Main.prototype = Object.create(PIXI.Container.prototype);
 
-function _gameOver() {
+Main.prototype._gameOver = function() {
 
     console.log("game over");
 
     window.clearInterval(this._interval);
 }
 
-function _onTick() {
+Main.prototype._onTick = function() {
 
     this._snake.moveTo(this._direction);
 
@@ -41,7 +41,7 @@ function _onTick() {
     }
 }
 
-function _keyDownCallback(keyData) {
+Main.prototype._keyDownCallback = function(keyData) {
 
     if (keyData.keyCode == KeyboardEvent.DOM_VK_UP && this._direction != KeyboardEvent.DOM_VK_DOWN)
         this._direction = keyData.keyCode;

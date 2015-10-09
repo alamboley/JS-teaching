@@ -10,23 +10,13 @@ function Snake(gridTab) {
     this._body.push(this._gridTab[3][0] = new Cell(3, 0, Grid.CASE_SNAKE, 0x00AAFF));
     this._body.push(this._gridTab[2][0] = new Cell(2, 0, Grid.CASE_SNAKE, 0x00AAFF));
     this._body.push(this._gridTab[1][0] = new Cell(1, 0, Grid.CASE_SNAKE, 0x00AAFF));
-
-    for (var i = 0; i < 40; ++i) {
-
-        this._gridTab[i] = [];
-
-        for (var j = 0; j < 30; ++j) {
-
-            this._gridTab[i][j] = new Cell(i, j, Grid.CASE_EMPTY);
-        }
-    }
 }
 
 Snake.prototype = Object.create(PIXI.Graphics.prototype);
 
 Snake.prototype.moveTo = function(direction) {
 
-    var futureTail = _getNextCell.bind(this)(direction);
+    var futureTail = this._getNextCell(direction);
 
     if (futureTail.type == Grid.CASE_SNAKE) {
 
@@ -58,16 +48,16 @@ Snake.prototype.draw = function() {
 
     for (var i = 0; i < 40; ++i)
         for (var j = 0; j < 30; ++j)
-            if (this._gridTab[i][j].type == Grid.CASE_SNAKE || this._gridTab[i][j].type == Grid.CASE_SNAKE_HEAD || this._gridTab[i][j].type == Grid.CASE_APPLE) {
+            if (this._gridTab[i][j].type != Grid.CASE_EMPTY) {
 
                 this.beginFill(this._gridTab[i][j].color);
                 this.drawRect(i * Grid.CASE_SIZE, j * Grid.CASE_SIZE, Grid.CASE_SIZE, Grid.CASE_SIZE);
             }
 
     this.endFill();
-}
+};
 
-function _getNextCell(direction) {
+Snake.prototype._getNextCell = function(direction) {
 
     var tail = this._body[0];
     var futureTail;
