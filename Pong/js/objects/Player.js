@@ -32,8 +32,8 @@ function _addedToStage(data) {
         this.addListener('mousemove', _mouseMoveCallback);
 
     else {
-        window.addEventListener('keydown', _keyDownCallback.bind(this));
-        window.addEventListener('keyup', _keyDownCallback.bind(this));
+        window.addEventListener('keydown', _keyCallback.bind(this));
+        window.addEventListener('keyup', _keyCallback.bind(this));
     }
 }
 
@@ -42,7 +42,7 @@ function _mouseMoveCallback(mouseData) {
     mouseData.target.y = mouseData.data.global.y;
 }
 
-function _keyDownCallback(keyData) {
+function _keyCallback(keyData) {
 
     if (keyData.keyCode == 38)
         this._moveUp = keyData.type == "keydown";
