@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Maths</title>
+    <style>
+        body {
+            margin:0;
+            padding:0;
+        }
+    </style>
+</head>
+<body>
+    <script type="text/javascript" src="../lib/pixi.js"></script>
+
+    <script type="text/javascript">
+
+        var renderer = PIXI.autoDetectRenderer(800, 600, {backgroundColor:0x000000});
+        document.body.appendChild(renderer.view);
+
+        var stage = new PIXI.Container();
+
+        var graphics = new PIXI.Graphics();
+            
+        graphics.lineStyle(0);
+        graphics.beginFill(0xFF0000, 0.5);
+        graphics.drawCircle(0, 0, 60);
+        graphics.endFill();
+
+        stage.addChild(graphics);
+
+        var smoothness = 10;
+
+        animate();
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            var mouse = renderer.plugins.interaction.mouse.global;
+
+            graphics.x += (mouse.x - graphics.x) / smoothness;
+            graphics.y += (mouse.y - graphics.y) / smoothness;
+
+            renderer.render(stage);
+        }
+    </script>
+</body>
+</html>
