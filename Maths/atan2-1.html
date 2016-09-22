@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Maths</title>
+    <style>
+        body {
+            margin:0;
+            padding:0;
+        }
+    </style>
+</head>
+<body>
+    <script type="text/javascript" src="../lib/pixi.js"></script>
+    <script type="text/javascript" src="js/Main.js"></script>
+    <script type="text/javascript" src="js/Enemy.js"></script>
+    <script type="text/javascript" src="js/Missile.js"></script>
+
+    <script type="text/javascript">
+
+        var renderer = PIXI.autoDetectRenderer(800, 600, {backgroundColor:0x000000});
+        document.body.appendChild(renderer.view);
+
+        var stage = new PIXI.Container();
+        stage.interactive = true;
+
+        var main = new Main();
+
+        stage.addChild(main);
+
+        animate();
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            main.update();
+
+            renderer.render(stage);
+        }
+    </script>
+</body>
+</html>
