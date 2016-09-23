@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Maths</title>
+    <style>
+        body {
+            margin:0;
+            padding:0;
+        }
+    </style>
+</head>
+<body>
+    <script type="text/javascript" src="../lib/pixi.js"></script>
+
+    <script type="text/javascript">
+
+        var renderer = PIXI.autoDetectRenderer(800, 600, {backgroundColor:0x000000});
+        document.body.appendChild(renderer.view);
+
+        var stage = new PIXI.Container();
+
+        var graphics = new PIXI.Graphics();
+        
+        graphics.beginFill(0xFF0000, 1);
+        graphics.drawCircle(0, 0, 30);
+        graphics.endFill();
+
+        graphics.x = 50;
+        graphics.y = 200;
+
+        stage.addChild(graphics);
+
+        var xspeed = Math.random() * 60 - 30;
+        var yspeed = Math.random() * 60 - 30;
+
+        var gravity = 2;
+        var friction = 0.98;
+        var bounce = 0.9;
+
+        var dragging = false;
+        graphics.interactive = true;
+        graphics.buttonMode = true;
+        graphics.on('mousedown', mousedown);
+        graphics.on('mousemove', mousemove);
+        graphics.on('mouseup', mouseup);
+        var oldX = graphics.x;
+        var oldY = graphics.y;
+
+        animate();
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            if (!dragging) {
+
+                graphics.x += xspeed;
+
+                if (graphics.x + graphics.width / 2 > renderer.width) {
+
+                    graphics.x = renderer.width - graphics.width / 2;
+                    xspeed = -xspeed * bounce;
+                }
+
+                if (graphics.x - graphics.width / 2 < 0) {
+
+                    graphics.x = 0 + graphics.width / 2;
+                    xspeed = -xspeed * bounce;
+                }
+
+                graphics.y += yspeed;
+
+                if (graphics.y + graphics.height / 2 > renderer.height) {
+
+                    graphics.y = renderer.height - graphics.height / 2;
+                    yspeed = -yspeed * bounce;
+                }
+
+                if (graphics.y - graphics.height / 2 < 0) {
+
+                    graphics.y = 0 + graphics.height / 2;
+                    yspeed = -yspeed * bounce;
+                }
+
+                xspeed = xspeed * friction;
+                yspeed = yspeed * friction + gravity;
+
+            } else {
+
+                xspeed = graphics.x - oldX;
+                yspeed = graphics.y - oldY;
+
+                oldX = graphics.x;
+                oldY = graphics.y;
+            }
+
+
+            renderer.render(stage);
+        }
+
+        function mousedown() {
+
+            dragging = true;
+        }
+
+        function mousemove() {
+
+            if (dragging) {
+
+                var newPosition = renderer.plugins.interaction.mouse.global;
+                graphics.x = newPosition.x;
+                graphics.y = newPosition.y;
+            }
+        }
+
+        function mouseup() {
+
+            dragging = false;
+        }
+    </script>
+</body>
+</html>
