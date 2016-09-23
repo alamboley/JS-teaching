@@ -12,9 +12,6 @@
 </head>
 <body>
     <script type="text/javascript" src="../lib/pixi.js"></script>
-    <script type="text/javascript" src="js/Main.js"></script>
-    <script type="text/javascript" src="js/Enemy.js"></script>
-    <script type="text/javascript" src="js/Missile.js"></script>
 
     <script type="text/javascript">
 
@@ -22,18 +19,52 @@
         document.body.appendChild(renderer.view);
 
         var stage = new PIXI.Container();
-        stage.interactive = true;
 
-        var main = new Main();
+        var snake = [];
 
-        stage.addChild(main);
+        for (var i = 0; i < 8; ++i) {
+
+            var graphics = new PIXI.Sprite(PIXI.Texture.fromImage('../bin/triangle.png'));
+
+            graphics.anchor.set(0.5);
+
+            graphics.x = -i * graphics.width;
+
+            stage.addChild(graphics);
+
+            snake.push(graphics);
+        }
+
+        var smoothness = 10;
 
         animate();
 
         function animate() {
             requestAnimationFrame(animate);
 
-            main.update();
+            var mouse = renderer.plugins.interaction.mouse.global;
+
+            for (var i = 0; i < 8; ++i) {
+
+                var graphics = snake[i];
+
+                if (i == 0) {
+
+                    graphics.x += (mouse.x - graphics.x) / smoothness;
+                    graphics.y += (mouse.y - graphics.y) / smoothness;
+
+                    graphics.rotation = Math.atan2(mouse.y - graphics.y, mouse.x - graphics.x);
+
+                } else {
+
+                    var previous = snake[i - 1];
+
+                    graphics.x += (previous.x - graphics.x) / smoothness;
+                    graphics.y += (previous.y - graphics.y) / smoothness;
+
+                    graphics.rotation = Math.atan2(previous.y - graphics.y, previous.x - graphics.x);
+                }
+            }
 
             renderer.render(stage);
         }
