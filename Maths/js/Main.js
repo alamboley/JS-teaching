@@ -41,6 +41,40 @@ Main.prototype.update = function() {
 
         missile.update();
     });
+
+    var garbageEnemies = [];
+    var garbageMissiles = [];
+
+    var that = this;
+
+    this.missiles.forEach(function(missile) {
+
+        that.enemies.forEach(function(enemy) {
+
+            var xdist = enemy.x - missile.x;
+            if (xdist > -enemy.width / 2 && xdist < enemy.width / 2) {
+
+                var ydist = enemy.y - missile.y;
+                if (ydist > -enemy.height / 2 && ydist < enemy.height / 2) {
+
+                    garbageEnemies.push(enemy);
+                    garbageMissiles.push(missile);
+                }
+            }
+        });
+    });
+
+    garbageEnemies.forEach(function(enemy) {
+
+        that.removeChild(enemy);
+        that.enemies.splice(that.enemies.indexOf(enemy), 1);
+    });
+
+    garbageMissiles.forEach(function(missile) {
+
+        that.removeChild(missile);
+        that.missiles.splice(that.missiles.indexOf(missile), 1);
+    });
 };
 
 function onDown(mouseData) {
