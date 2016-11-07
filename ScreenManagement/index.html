@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Screen Management</title>
+    <style>
+        body {
+            margin:0;
+            padding:0;
+        }
+    </style>
+</head>
+<body>
+    <script type="text/javascript" src="../lib/pixi.js"></script>
+    <script type="text/javascript" src="../lib/TweenMax.min.js"></script>
+
+    <script type="text/javascript" src="js/Main.js"></script>
+    <script type="text/javascript" src="js/Home.js"></script>
+    <script type="text/javascript" src="js/Game.js"></script>
+    <script type="text/javascript" src="js/EndGame.js"></script>
+
+    <script type="text/javascript">
+
+        var renderer = PIXI.autoDetectRenderer(500, 700, {backgroundColor:0x000000});
+        document.body.appendChild(renderer.view);
+
+        var stage = new PIXI.Container();
+
+        var main = new Main();
+        stage.addChild(main),
+
+        animate();
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            main.update();
+
+            renderer.render(stage);
+        }
+    </script>
+</body>
+</html>
