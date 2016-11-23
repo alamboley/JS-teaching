@@ -26,6 +26,8 @@ EndGame.prototype.update = function() {
 
 EndGame.prototype.destroy = function() {
 
+	this.gameOver.removeAllListeners();
+
 	TweenMax.killTweensOf(this.gameOver);
 }
 

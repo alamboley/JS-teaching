@@ -25,6 +25,8 @@ Home.prototype.update = function() {
 
 Home.prototype.destroy = function() {
 
+	this.getReady.removeAllListeners();
+
 	TweenMax.killTweensOf(this.getReady);
 }
 
