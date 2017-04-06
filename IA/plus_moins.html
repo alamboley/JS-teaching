@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Plus ou moins</title>
+    <style>
+        body {
+            margin:0;
+            padding:0;
+        }
+    </style>
+</head>
+<body>
+
+    <script type="text/javascript">
+
+        var min = 0;
+        var max = 100;
+        var nbrTest = 0;
+
+        var estimatedNumber = max / 2;
+
+        ask();
+
+        function plus() {
+
+            min = estimatedNumber + 1;
+
+            estimatedNumber = Math.floor((min + max) / 2);
+
+            ask();
+        }
+
+        function less() {
+
+            max = estimatedNumber - 1;
+            
+            estimatedNumber = Math.floor((min + max) / 2);
+
+            ask();
+        }
+
+        function ok() {
+
+            console.log("gagné en " + nbrTest + " coups !!");
+        }
+
+        function ask() {
+
+            ++nbrTest;
+
+            console.log("le nombre est il égal à " + estimatedNumber + "?");
+        }
+    </script>
+</body>
+</html>
