@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Morpion</title>
+    <style>
+        body {
+            margin:0;
+            padding:0;
+        }
+    </style>
+</head>
+<body>
+    <script type="text/javascript" src="../../lib/pixi.js"></script>
+    <script type="text/javascript" src="js/Main.js"></script>
+    <script type="text/javascript" src="js/objects/Grid.js"></script>
+
+    <script type="text/javascript">
+
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+
+        var renderer = PIXI.autoDetectRenderer(width, height, {backgroundColor:0x000000});
+        document.body.appendChild(renderer.view);
+
+        var stage = new PIXI.Container();
+
+        var main = new Main();
+        stage.addChild(main);
+
+        animate();
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            renderer.render(stage);
+        }
+    </script>
+</body>
+</html>
