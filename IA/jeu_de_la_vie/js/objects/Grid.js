@@ -82,23 +82,16 @@ Grid.prototype.nextStep = function() {
     var create = [];
 
     for (var i = 0; i < this.grid.length; ++i)
-        for (var j = 0; j < this.grid[i].length; ++j)
-            if (this.grid[i][j] != 0) {
+        for (var j = 0; j < this.grid[i].length; ++j) {
 
-                var cell = this.grid[i][j];
+            var numNeighbours = this.numNeighbours(i, j);
 
-                var numNeighbours = this.numNeighbours(cell.posX, cell.posY);
+            if (this.grid[i][j] != 0 && (numNeighbours < 2 || numNeighbours > 3))
+                garbage.push(this.grid[i][j]);
 
-                if (numNeighbours < 2 || numNeighbours > 3)
-                    garbage.push(cell);
-
-            } else {
-
-                var numNeighbours = this.numNeighbours(i, j);
-
-                if (numNeighbours == 3)
-                    create.push([i, j]);
-            }
+            else if (this.grid[i][j] == 0 && numNeighbours == 3)
+                create.push([i, j]);
+        }
 
 
     for (i = 0; i < garbage.length; ++i)
