@@ -11,12 +11,7 @@ function Main() {
     this.addChild(this.text);
 
     this.text.interactive = this.text.buttonMode = true;
-    this.text.click = this.nextSimulationStep.bind(this);
+    this.text.click = this.grid.nextStep.bind(this.grid);
 }
 
 Main.prototype = Object.create(PIXI.Container.prototype);
-
-Main.prototype.nextSimulationStep = function (evt) {
-
-	this.grid.nextStep();
-}
