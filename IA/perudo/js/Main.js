@@ -19,7 +19,8 @@ Main.prototype.onAssetsLoaded = function() {
     title.y = this.board.y + 20;
     this.addChild(title);
 
-    this.board.startGame();
+    this.board.rollDice();
+    this.board.play();
 }
 
 Main.prototype.update = function() {

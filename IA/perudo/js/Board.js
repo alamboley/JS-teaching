@@ -7,7 +7,7 @@ function Board(numPlayers) {
 
     this.players = [];
     this.colors = ["blue", "green", "orange", "purple", "red", "yellow", "cream"];
-    this.shuffleArray(this.colors);
+    Utils.shuffleArray(this.colors);
 
     for (var i = 0; i < numPlayers; ++i) {
 
@@ -19,27 +19,45 @@ function Board(numPlayers) {
     	this.addChild(player);
 
     	this.players.push(player);
+
+    	player.on('played', this.playerPlayed.bind(this));
     }
+
+    this.numDices = 0;
+    this.diceValue = 0;
+    this.playerTurn = 0;
 }
 
 Board.prototype = Object.create(PIXI.Container.prototype);
 
-Board.prototype.startGame = function() {
+Board.prototype.rollDice = function() {
 
 	for (var i = 0; i < this.players.length; ++i)
 		this.players[i].rollDice();
-
-	this.player[0].startGame();
 }
 
-Board.prototype.shuffleArray = function (a) {
-    
-    var j, x, i;
+Board.prototype.play = function() {
 
-    for (i = a.length; i; i--) {
-        j = Math.floor(Math.random() * i);
-        x = a[i - 1];
-        a[i - 1] = a[j];
-        a[j] = x;
-    }
+	this.players[this.playerTurn].play();
+}
+
+Board.prototype.playerPlayed = function(evt) {
+
+	//TODO manage Paco
+	if (evt.numDices > this.numDices || evt.diceValue > this.diceValue) {
+
+		this.numDices = evt.numDices;
+		this.diceValue = evt.diceValue;
+
+		this.players[this.playerTurn].showProposition(this.numDices, this.diceValue);
+
+		if (++this.playerTurn >= this.players.length)
+			this.playerTurn = 0;
+
+		this.play();
+
+	} else {
+
+		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles");
+	}
 }
