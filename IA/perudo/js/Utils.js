@@ -47,3 +47,11 @@ Utils.getHexColor = function(color) {
 
 	return 0xFFFFFF;
 }
+
+Utils.blackOrWhite = function(color) {
+
+	if (color == "blue" || color == "green" || color == "orange" || color == "purple" || color == "red")
+		return "_white";
+
+	return "_black";
+}

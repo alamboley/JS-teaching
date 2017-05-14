@@ -15,13 +15,15 @@ Player.prototype.play = function() {
 
 		// début de partie, il faut faire une annonce
 
-		this.emit('played', {numDices:2, diceValue:2});
+		this.emit('incremented', {numDices:2, diceValue:2});
 
 
 	} else {
 
 		// enchère ou bluff
 
-		this.emit('played', {numDices:3, diceValue:3});
+		//this.emit('incremented', {numDices:3, diceValue:3});
+
+		this.emit('dudo');
 	}
 }
