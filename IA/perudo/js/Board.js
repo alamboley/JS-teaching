@@ -70,6 +70,10 @@ Board.prototype.playerIncremented = function(evt) {
 
 		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles");
 
+	} else if (evt.numDices < this.numDices || evt.diceValue < this.diceValue) {
+
+		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles");
+
 	} else if (evt.numDices > this.numDices || evt.diceValue > this.diceValue) {
 
 		this.numDices = evt.numDices;
