@@ -13,6 +13,12 @@ function APlayer(color) {
     this.dice.x = (text.width - this.dice.width) * 0.7;
     this.dice.y = text.height + 10;
 	this.addChild(this.dice);
+
+	this.dudo = new PIXI.Text("DUDO !");
+	this.dudo.x = text.x + (text.width - this.dudo.width) / 2;
+	this.dudo.y = this.dice.y + this.dice.height + 10;
+	this.dudo.visible = false;
+    this.addChild(this.dudo);
 }
 
 APlayer.prototype = Object.create(PIXI.Container.prototype);
@@ -34,19 +40,26 @@ APlayer.prototype.showProposition = function(numDices, diceValue) {
 
 APlayer.prototype.deletePreviousProposition = function() {
 
-	if (this.children.length > 2)
-		this.removeChildren(2);
+	if (this.children.length > 3)
+		this.removeChildren(3);
+}
+
+APlayer.prototype.showDudo = function() {
+
+	this.dudo.visible = true;
+
+	this.deletePreviousProposition();
 }
 
 APlayer.prototype.rollDice = function() {
+
+	this.dudo.visible = false;
 
 	this.dices = [];
 	for (var i = 0; i < this.numDices; ++i)
 		this.dices.push(Utils.randomIntFromInterval(1, 6));
 
-	// suppression de la précédente proposition
-	if (this.children.length > 2)
-		this.removeChildren(2);
+	this.deletePreviousProposition();
 
 	console.log(this.name + " dés : " + this.dices);
 }

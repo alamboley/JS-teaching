@@ -25,6 +25,7 @@ function Board(numPlayers) {
     	player.on('eliminated', this.playerEliminated.bind(this));
     }
 
+    this.gameRunning = false;
     this.dicesInGame = 0;
     this.numDices = 0;
     this.diceValue = 0;
@@ -35,6 +36,7 @@ Board.prototype = Object.create(PIXI.Container.prototype);
 
 Board.prototype.rollDice = function() {
 
+	this.gameRunning = true;
 	this.dicesInGame = 0;
 	this.numDices = 0;
     this.diceValue = 0;
@@ -52,7 +54,10 @@ Board.prototype.rollDice = function() {
 
 Board.prototype.play = function() {
 
-	this.players[this.playerTurn].play();
+	if (this.gameRunning)
+		this.players[this.playerTurn].play();
+	else
+		this.rollDice();
 }
 
 Board.prototype.playerIncremented = function(evt) {
@@ -79,6 +84,7 @@ Board.prototype.playerSaidDudo = function() {
 	//TODO manage paco
 
 	console.log(this.players[this.playerTurn].name + " dit dudo !");
+	this.players[this.playerTurn].showDudo();
 
 	var numDices = 0;
 	for (var i = 0; i < this.players.length; ++i)
@@ -112,10 +118,7 @@ Board.prototype.playerSaidDudo = function() {
 	if (this.players.length == 1)
 		console.log("Le gagnant est " + this.players[0].name);
 
-	else {
-
-		this.rollDice();
-	}
+	this.gameRunning = false;
 }
 
 Board.prototype.playerEliminated = function(player) {
