@@ -26,6 +26,6 @@ Player.prototype.play = function() {
 			this.emit('dudo');
 
 		else
-			this.emit('incremented', {numDices:this.parent.numDices + 1, diceValue:3});
+			this.emit('incremented', {numDices:this.parent.numDices + 1, diceValue:2});
 	}
 }
