@@ -19,8 +19,7 @@ APlayer.prototype = Object.create(PIXI.Container.prototype);
 
 APlayer.prototype.showProposition = function(numDices, diceValue) {
 
-	if (this.children.length > 2)
-		this.removeChildren(2);
+	this.deletePreviousProposition();
 
 	var num = new PIXI.Text(numDices);
 	num.x = this.dice.x - num.width - 20;
@@ -31,6 +30,12 @@ APlayer.prototype.showProposition = function(numDices, diceValue) {
 	diceValue.x = this.dice.x + (this.dice.width - diceValue.width) / 2;
 	diceValue.y = this.dice.y + (this.dice.height - diceValue.height) / 2;
 	this.addChild(diceValue);
+}
+
+APlayer.prototype.deletePreviousProposition = function() {
+
+	if (this.children.length > 2)
+		this.removeChildren(2);
 }
 
 APlayer.prototype.rollDice = function() {
@@ -61,6 +66,8 @@ APlayer.prototype.lostDice = function() {
 		console.log(this.name + " est éliminé");
 
 		this.emit('eliminated', this);
+
+		this.deletePreviousProposition();
 	}
 }
 
