@@ -25,6 +25,7 @@ function Board(numPlayers) {
     	player.on('eliminated', this.playerEliminated.bind(this));
     }
 
+    this.dicesInGame = 0;
     this.numDices = 0;
     this.diceValue = 0;
     this.playerTurn = 0;
@@ -34,8 +35,17 @@ Board.prototype = Object.create(PIXI.Container.prototype);
 
 Board.prototype.rollDice = function() {
 
-	for (var i = 0; i < this.players.length; ++i)
+	this.dicesInGame = 0;
+
+	for (var i = 0; i < this.players.length; ++i) {
+
 		this.players[i].rollDice();
+
+		for (var j = 0; j < this.players[i].dices.length; ++j)
+			++this.dicesInGame;
+	}
+
+	console.log("Il y a " + this.dicesInGame + " dés en jeu");
 }
 
 Board.prototype.play = function() {
