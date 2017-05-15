@@ -39,6 +39,10 @@ APlayer.prototype.rollDice = function() {
 	for (var i = 0; i < this.numDices; ++i)
 		this.dices.push(Utils.randomIntFromInterval(1, 6));
 
+	// suppression de la précédente proposition
+	if (this.children.length > 2)
+		this.removeChildren(2);
+
 	console.log(this.name + " dés : " + this.dices);
 }
 

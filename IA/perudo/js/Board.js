@@ -36,6 +36,8 @@ Board.prototype = Object.create(PIXI.Container.prototype);
 Board.prototype.rollDice = function() {
 
 	this.dicesInGame = 0;
+	this.numDices = 0;
+    this.diceValue = 0;
 
 	for (var i = 0; i < this.players.length; ++i) {
 
@@ -66,8 +68,6 @@ Board.prototype.playerIncremented = function(evt) {
 		if (++this.playerTurn >= this.players.length)
 			this.playerTurn = 0;
 
-		this.play();
-
 	} else {
 
 		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles");
@@ -78,6 +78,8 @@ Board.prototype.playerSaidDudo = function() {
 
 	//TODO manage paco
 
+	console.log(this.players[this.playerTurn].name + " dit dudo !");
+
 	var numDices = 0;
 	for (var i = 0; i < this.players.length; ++i)
 		for (var j = 0; j < this.players[i].dices.length; ++j)
@@ -87,13 +89,19 @@ Board.prototype.playerSaidDudo = function() {
 	var lostPlayerIndex = 0;
 	if (numDices < this.numDices) {
 
+		console.log("le nombre de dés est inférieur au nombre annoncé !");
+
 		if (this.playerTurn == 0)
 			lostPlayerIndex = this.players.length - 1;
 		else
 			lostPlayerIndex = this.playerTurn - 1;
 
-	} else
+	} else {
+
+		console.log("il y a au moins le nombre de dés annoncé !");
+
 		lostPlayerIndex = this.playerTurn;
+	}
 
 	this.players[lostPlayerIndex].lostDice();
 	this.playerTurn = lostPlayerIndex;
@@ -107,7 +115,6 @@ Board.prototype.playerSaidDudo = function() {
 	else {
 
 		this.rollDice();
-		this.play();
 	}
 }
 

@@ -22,8 +22,10 @@ Player.prototype.play = function() {
 
 		// enchère ou bluff
 
-		//this.emit('incremented', {numDices:3, diceValue:3});
+		if (this.parent.numDices > 6)
+			this.emit('dudo');
 
-		this.emit('dudo');
+		else
+			this.emit('incremented', {numDices:this.parent.numDices + 1, diceValue:3});
 	}
 }

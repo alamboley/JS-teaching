@@ -19,10 +19,22 @@ Main.prototype.onAssetsLoaded = function() {
     title.y = this.board.y + 20;
     this.addChild(title);
 
+    var nextPlayer = PIXI.Sprite.fromFrame("next_player.png");
+    nextPlayer.x = this.board.x + this.board.width - nextPlayer.width - 50;
+    nextPlayer.y = title.y + (title.height - nextPlayer.height) / 2;
+    this.addChild(nextPlayer);
+
+    nextPlayer.interactive = nextPlayer.buttonMode = true;
+    nextPlayer.click = this.nextPlayer.bind(this);
+
     this.board.rollDice();
-    this.board.play();
 }
 
 Main.prototype.update = function() {
 
+}
+
+Main.prototype.nextPlayer = function() {
+
+	this.board.play();
 }

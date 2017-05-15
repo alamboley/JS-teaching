@@ -245,6 +245,19 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">graphics/next_player.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>59,23,118,46</rect>
+                <key>scale9Paddings</key>
+                <rect>59,23,118,46</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">graphics/perudo.jpg</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
