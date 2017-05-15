@@ -1,6 +1,6 @@
-function Player(color) {
+function Player(color, numPlayer) {
 
-	this.name = "votre nom " + Math.floor(Math.random() * 100) / 100;
+	this.name = "votre nom " + (numPlayer + 1);
 
     APlayer.call(this, color);
 }

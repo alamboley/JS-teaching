@@ -11,7 +11,7 @@ function Board(numPlayers) {
 
     for (var i = 0; i < numPlayers; ++i) {
 
-    	var player = new Player(this.colors.pop());
+    	var player = new Player(this.colors.pop(), i);
 
     	player.x = 400 - player.width / 2 + 200 * Math.cos(2 * Math.PI * i * 1 / numPlayers);
     	player.y = 300 + 150 * Math.sin(2 * Math.PI * i * 1 / numPlayers);
