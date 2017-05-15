@@ -25,11 +25,11 @@ function Board(numPlayers) {
     	player.on('eliminated', this.playerEliminated.bind(this));
     }
 
-    this.gameRunning = false;
-    this.dicesInGame = 0;
-    this.numDices = 0;
-    this.diceValue = 0;
-    this.playerTurn = 0;
+    this.gameRunning = false; // est-ce que la partie à commencer ? C'est à dire que les dés ont été mélangé.
+    this.dicesInGame = 0; // nombre de dés de tous les joueurs combinés
+    this.numDices = 0; // nombre de dés annoncés
+    this.diceValue = 0; // valeur des dés annoncés
+    this.playerTurn = 0; // permet de déterminer c'est à quel joueur de jouer
 }
 
 Board.prototype = Object.create(PIXI.Container.prototype);
@@ -63,7 +63,14 @@ Board.prototype.play = function() {
 Board.prototype.playerIncremented = function(evt) {
 
 	//TODO manage Paco
-	if (evt.numDices > this.numDices || evt.diceValue > this.diceValue) {
+
+	// on vérifie que c'est uniquement la valeur des dés ou le nombre de dés qui a augmenté
+	// on gère également le cas du premier joueur
+	if (this.numDices != 0 && evt.numDices > this.numDices && evt.diceValue > this.diceValue) {
+
+		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles");
+
+	} else if (evt.numDices > this.numDices || evt.diceValue > this.diceValue) {
 
 		this.numDices = evt.numDices;
 		this.diceValue = evt.diceValue;
@@ -86,6 +93,7 @@ Board.prototype.playerSaidDudo = function() {
 	console.log(this.players[this.playerTurn].name + " dit dudo !");
 	this.players[this.playerTurn].showDudo();
 
+	// on compte le nombre de dés de la valeur correspondante
 	var numDices = 0;
 	for (var i = 0; i < this.players.length; ++i)
 		for (var j = 0; j < this.players[i].dices.length; ++j)
