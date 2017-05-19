@@ -71,7 +71,7 @@ Board.prototype.playerIncremented = function(evt) {
 	if (this.numDices == 0 && evt.diceValue == 1)
 		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles, il a commencé avec des paco");
 
-	else if (this.numDices != 0 && evt.numDices > this.numDices && evt.diceValue > this.diceValue)
+	else if (!this.usingPaco && this.numDices != 0 && evt.numDices > this.numDices && evt.diceValue > this.diceValue)
 		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles, il a augmenté le nombre de dés et la valeur des dés");
 
 	else if (!this.usingPaco && evt.diceValue != 1 && (evt.numDices < this.numDices || evt.diceValue < this.diceValue))
