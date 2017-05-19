@@ -104,10 +104,13 @@ Board.prototype.playerSaidDudo = function() {
 			if (this.players[i].dices[j] == this.diceValue)
 				++numDices;
 
+	console.log("il y a " + numDices + " dé(s) de " + this.diceValue);
+
 	var lostPlayerIndex = 0;
 	if (numDices < this.numDices) {
 
 		console.log("le nombre de dés est inférieur au nombre annoncé !");
+		// le précédent joueur va perdre un dé.
 
 		if (this.playerTurn == 0)
 			lostPlayerIndex = this.players.length - 1;
@@ -117,6 +120,7 @@ Board.prototype.playerSaidDudo = function() {
 	} else {
 
 		console.log("il y a au moins le nombre de dés annoncé !");
+		// le joueur courant perd un dé;
 
 		lostPlayerIndex = this.playerTurn;
 	}
