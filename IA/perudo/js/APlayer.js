@@ -5,6 +5,8 @@ function APlayer(color) {
     this.color = color;
     this.numDices = 5;
     this.dices = [];
+    this.isPalifico = false;
+    this.turnPalifico = 0;
 
     var text = new PIXI.Text(this.name, {fill:Utils.getHexColor(this.color)});
     this.addChild(text);
@@ -61,6 +63,17 @@ APlayer.prototype.rollDice = function() {
 
 	this.deletePreviousProposition();
 
+	// on peut-être palifico à la fin d'une manche au moment où on perd un dé.
+    // ensuite on relance les dés, on est toujours palifico.
+    // la prochaine fois qu'on relancera encore les dés, on ne le sera plus, on stock donc ce n + 1 dans une variable.
+	if (this.isPalifico) {
+
+		if (this.turnPalifico == 0)
+			this.turnPalifico = 1;
+		else
+			this.isPalifico = false;
+	}
+
 	console.log(this.name + " dés : " + this.dices);
 }
 
@@ -69,10 +82,11 @@ APlayer.prototype.lostDice = function() {
 	console.log(this.name + " a perdu un dé");
 	--this.numDices;
 
-	//TODO manage Palifico
 	if (this.numDices == 1) {
 
 		console.log(this.name + " est Palifico");
+
+		this.emit('palifico', this);
 
 	} else if (this.numDices == 0) {
 

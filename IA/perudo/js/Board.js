@@ -22,6 +22,7 @@ function Board(numPlayers) {
 
     	player.on('incremented', this.playerIncremented.bind(this));
     	player.on('dudo', this.playerSaidDudo.bind(this));
+    	player.on('palifico', this.playerIsPalifico.bind(this));
     	player.on('eliminated', this.playerEliminated.bind(this));
     }
 
@@ -30,6 +31,7 @@ function Board(numPlayers) {
     this.numDices = 0; // nombre de dés annoncés
     this.diceValue = 0; // valeur des dés annoncés
     this.playerTurn = 0; // permet de déterminer c'est à quel joueur de jouer
+    this.palificoPlayer = false; // un joueur est-il palifico ?
 }
 
 Board.prototype = Object.create(PIXI.Container.prototype);
@@ -66,13 +68,18 @@ Board.prototype.playerIncremented = function(evt) {
 
 	// on vérifie que c'est uniquement la valeur des dés ou le nombre de dés qui a augmenté
 	// on gère également le cas du premier joueur
+
 	if (this.numDices != 0 && evt.numDices > this.numDices && evt.diceValue > this.diceValue) {
 
-		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles");
+		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles, il a augmenté le nombre de dés et la valeur des dés");
 
 	} else if (evt.numDices < this.numDices || evt.diceValue < this.diceValue) {
 
-		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles");
+		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles, il a diminué la valeur des dés ou leurs nombres");
+
+	} else if (this.palificoPlayer && evt.diceValue > this.diceValue) {
+
+		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles, alors qu'un joueur est palifico il a augmenté la valeur des dés");
 
 	} else if (evt.numDices > this.numDices || evt.diceValue > this.diceValue) {
 
@@ -105,6 +112,8 @@ Board.prototype.playerSaidDudo = function() {
 				++numDices;
 
 	console.log("il y a " + numDices + " dé(s) de " + this.diceValue);
+
+	this.palificoPlayer = false; // à la fin de la partie, on suppose qu'il n'y a plus de palifico, si c'est le cas ça serait fait automatiquement via lostDice(); 
 
 	var lostPlayerIndex = 0;
 	if (numDices < this.numDices) {
@@ -139,6 +148,12 @@ Board.prototype.playerSaidDudo = function() {
 	}
 
 	this.gameRunning = false;
+}
+
+Board.prototype.playerIsPalifico = function(player) {
+
+	this.palificoPlayer = true;
+	player.isPalifico = true;
 }
 
 Board.prototype.playerEliminated = function(player) {
