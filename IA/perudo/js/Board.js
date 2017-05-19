@@ -131,8 +131,12 @@ Board.prototype.playerSaidDudo = function() {
 	if (this.playerTurn == this.players.length)
 		this.playerTurn = 0;
 
-	if (this.players.length == 1)
+	if (this.players.length == 1) {
+
 		console.log("Le gagnant est " + this.players[0].name);
+
+		this.emit('winner', this.players[0]);
+	}
 
 	this.gameRunning = false;
 }

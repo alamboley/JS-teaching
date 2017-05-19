@@ -9,6 +9,18 @@ Main.prototype = Object.create(PIXI.Container.prototype);
 
 Main.prototype.onAssetsLoaded = function() {
 
+	this.createBoard();
+}
+
+Main.prototype.update = function() {
+
+}
+
+Main.prototype.createBoard = function() {
+
+	if (this.board)
+		this.removeChildren();
+
 	this.board = new Board(4);
     this.board.x = (width - this.board.width) / 2;
     this.board.y = (height - this.board.height) / 2;
@@ -28,13 +40,18 @@ Main.prototype.onAssetsLoaded = function() {
     nextPlayer.click = this.nextPlayer.bind(this);
 
     this.board.rollDice();
-}
 
-Main.prototype.update = function() {
-
+    this.board.once('winner', this.boardHasWinner.bind(this));
 }
 
 Main.prototype.nextPlayer = function() {
 
 	this.board.play();
+}
+
+Main.prototype.boardHasWinner = function (player) {
+
+	//console.log("winner " + player.name);
+
+	this.createBoard();
 }
