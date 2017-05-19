@@ -34,7 +34,7 @@ APlayer.prototype.showProposition = function(numDices, diceValue) {
 	num.y = this.dice.y + (this.dice.height - num.height) / 2;
 	this.addChild(num);
 
-	var diceValue = PIXI.Sprite.fromFrame(diceValue + Utils.blackOrWhite(this.color) + ".png");
+	var diceValue = PIXI.Sprite.fromFrame((diceValue == 1 ? "paco" : diceValue) + Utils.blackOrWhite(this.color) + ".png");
 	diceValue.x = this.dice.x + (this.dice.width - diceValue.width) / 2;
 	diceValue.y = this.dice.y + (this.dice.height - diceValue.height) / 2;
 	this.addChild(diceValue);

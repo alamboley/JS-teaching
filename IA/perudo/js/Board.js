@@ -32,6 +32,7 @@ function Board(numPlayers) {
     this.diceValue = 0; // valeur des dés annoncés
     this.playerTurn = 0; // permet de déterminer c'est à quel joueur de jouer
     this.palificoPlayer = false; // un joueur est-il palifico ?
+    this.usingPaco = false; // est-ce que l'enchère est entrain d'utiliser des paco ?
 }
 
 Board.prototype = Object.create(PIXI.Container.prototype);
@@ -64,24 +65,33 @@ Board.prototype.play = function() {
 
 Board.prototype.playerIncremented = function(evt) {
 
-	//TODO manage Paco
-
 	// on vérifie que c'est uniquement la valeur des dés ou le nombre de dés qui a augmenté
-	// on gère également le cas du premier joueur
+	// on gère également le cas du premier joueur, du palifico et des pacos.
 
-	if (this.numDices != 0 && evt.numDices > this.numDices && evt.diceValue > this.diceValue)
+	if (this.numDices == 0 && evt.diceValue == 1)
+		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles, il a commencé avec des paco");
+
+	else if (this.numDices != 0 && evt.numDices > this.numDices && evt.diceValue > this.diceValue)
 		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles, il a augmenté le nombre de dés et la valeur des dés");
 
-	else if (evt.numDices < this.numDices || evt.diceValue < this.diceValue)
+	else if (!this.usingPaco && (evt.numDices < this.numDices || evt.diceValue < this.diceValue))
 		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles, il a diminué la valeur des dés ou leurs nombres");
 
 	else if (this.palificoPlayer && this.numDices != 0 && evt.diceValue > this.diceValue)
 		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles, alors qu'un joueur est palifico il a augmenté la valeur des dés");
 
-	else if (evt.numDices > this.numDices || evt.diceValue > this.diceValue) {
+	else if (!this.usingPaco && evt.diceValue == 1 && evt.numDices < Math.ceil(this.numDices / 2))
+		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles, il propose de passer sur les paco sans annoncer suffisament de dés");
+
+	else if (this.usingPaco && evt.diceValue != 1 && evt.numDices < 2 * this.numDices + 1)
+		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles, alors qu'un paco est en cours, il a changé la valeur sans augmenter suffisament le nombre de dés");
+
+	else if ((evt.numDices > this.numDices || evt.diceValue > this.diceValue) || (evt.diceValue == 1 && !this.usingPaco)) {
 
 		this.numDices = evt.numDices;
 		this.diceValue = evt.diceValue;
+
+		this.usingPaco = evt.diceValue == 1;
 
 		this.players[this.playerTurn].showProposition(this.numDices, this.diceValue);
 
