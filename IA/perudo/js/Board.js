@@ -69,19 +69,16 @@ Board.prototype.playerIncremented = function(evt) {
 	// on vérifie que c'est uniquement la valeur des dés ou le nombre de dés qui a augmenté
 	// on gère également le cas du premier joueur
 
-	if (this.numDices != 0 && evt.numDices > this.numDices && evt.diceValue > this.diceValue) {
-
+	if (this.numDices != 0 && evt.numDices > this.numDices && evt.diceValue > this.diceValue)
 		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles, il a augmenté le nombre de dés et la valeur des dés");
 
-	} else if (evt.numDices < this.numDices || evt.diceValue < this.diceValue) {
-
+	else if (evt.numDices < this.numDices || evt.diceValue < this.diceValue)
 		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles, il a diminué la valeur des dés ou leurs nombres");
 
-	} else if (this.palificoPlayer && this.numDices != 0 && evt.diceValue > this.diceValue) {
-
+	else if (this.palificoPlayer && this.numDices != 0 && evt.diceValue > this.diceValue)
 		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles, alors qu'un joueur est palifico il a augmenté la valeur des dés");
 
-	} else if (evt.numDices > this.numDices || evt.diceValue > this.diceValue) {
+	else if (evt.numDices > this.numDices || evt.diceValue > this.diceValue) {
 
 		this.numDices = evt.numDices;
 		this.diceValue = evt.diceValue;
@@ -91,15 +88,11 @@ Board.prototype.playerIncremented = function(evt) {
 		if (++this.playerTurn >= this.players.length)
 			this.playerTurn = 0;
 
-	} else {
-
-		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles");
-	}
+	} else
+		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles: " + evt.numDices + " dés de valeur " + evt.diceValue);
 }
 
 Board.prototype.playerSaidDudo = function() {
-
-	//TODO manage paco
 
 	console.log(this.players[this.playerTurn].name + " dit dudo !");
 	this.players[this.playerTurn].showDudo();
@@ -108,7 +101,7 @@ Board.prototype.playerSaidDudo = function() {
 	var numDices = 0;
 	for (var i = 0; i < this.players.length; ++i)
 		for (var j = 0; j < this.players[i].dices.length; ++j)
-			if (this.players[i].dices[j] == this.diceValue)
+			if (this.players[i].dices[j] == this.diceValue || (!this.palificoPlayer && this.players[i].dices[j] == 1))
 				++numDices;
 
 	console.log("il y a " + numDices + " dé(s) de " + this.diceValue);
