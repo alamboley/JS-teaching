@@ -77,7 +77,7 @@ Board.prototype.playerIncremented = function(evt) {
 
 		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles, il a diminué la valeur des dés ou leurs nombres");
 
-	} else if (this.palificoPlayer && evt.diceValue > this.diceValue) {
+	} else if (this.palificoPlayer && this.numDices != 0 && evt.diceValue > this.diceValue) {
 
 		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles, alors qu'un joueur est palifico il a augmenté la valeur des dés");
 
