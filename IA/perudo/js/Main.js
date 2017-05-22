@@ -9,6 +9,9 @@ Main.prototype = Object.create(PIXI.Container.prototype);
 
 Main.prototype.onAssetsLoaded = function() {
 
+	this.players = [[new Player(), 0], [new Player(), 0], [new Player(), 0], [new Player(), 0]];
+	this.gameEnded = 0;
+
 	this.createBoard();
 }
 
@@ -21,10 +24,17 @@ Main.prototype.createBoard = function() {
 	if (this.board)
 		this.removeChildren();
 
-	this.board = new Board(4);
+	this.aPlayerWin = false;
+
+	this.board = new Board();
     this.board.x = (width - this.board.width) / 2;
     this.board.y = (height - this.board.height) / 2;
     this.addChild(this.board);
+
+    this.board.numPlayers = this.players.length;
+
+    for (var i = 0; i < this.players.length; ++i)
+    	this.board.addPlayer(this.players[i][0]);
 
     var title = PIXI.Sprite.fromFrame("perudo.jpg");
     title.x = (width - title.width) / 2;
@@ -42,6 +52,9 @@ Main.prototype.createBoard = function() {
     this.board.rollDice();
 
     this.board.once('winner', this.boardHasWinner.bind(this));
+
+    //while (!this.aPlayerWin)
+    //	this.board.play();
 }
 
 Main.prototype.nextPlayer = function() {
@@ -51,7 +64,23 @@ Main.prototype.nextPlayer = function() {
 
 Main.prototype.boardHasWinner = function (player) {
 
-	//console.log("winner " + player.name);
+	console.log("winner " + player.name);
 
-	this.createBoard();
+	for (var i = 0; i < this.players.length; ++i)
+		if (this.players[i][0] == player) {
+			++this.players[i][1];
+			break;
+		}
+
+	this.aPlayerWin = true;
+	++this.gameEnded;
+
+	if (this.gameEnded < 20)
+		this.createBoard();
+
+	else {
+
+		console.log("finiiiiish");
+		console.log(this.players);
+	}
 }

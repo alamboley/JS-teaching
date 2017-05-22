@@ -1,8 +1,8 @@
-function Player(color, numPlayer) {
+function Player() {
 
-	this.name = "votre nom " + (numPlayer + 1);
+    APlayer.call(this);
 
-    APlayer.call(this, color);
+    this.name = "votre nom";
 }
 
 Player.prototype = Object.create(APlayer.prototype);

@@ -1,14 +1,23 @@
-function APlayer(color) {
+function APlayer() {
 
     PIXI.Container.call(this);
+}
 
-    this.color = color;
-    this.numDices = 5;
+APlayer.prototype = Object.create(PIXI.Container.prototype);
+
+APlayer.prototype.reset = function() {
+
+	this.numDices = 5;
     this.dices = [];
     this.isPalifico = false;
     this.turnPalifico = 0;
+}
 
-    var text = new PIXI.Text(this.name, {fill:Utils.getHexColor(this.color)});
+APlayer.prototype.setColor = function(color, numPlayer) {
+
+	this.color = color;
+
+	var text = new PIXI.Text(this.name + " " + numPlayer, {fill:Utils.getHexColor(this.color)});
     this.addChild(text);
 
     this.dice = PIXI.Sprite.fromFrame("dice_" + this.color + ".png")
@@ -22,8 +31,6 @@ function APlayer(color) {
 	this.dudo.visible = false;
     this.addChild(this.dudo);
 }
-
-APlayer.prototype = Object.create(PIXI.Container.prototype);
 
 APlayer.prototype.showProposition = function(numDices, diceValue) {
 

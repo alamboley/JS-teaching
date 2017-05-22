@@ -1,30 +1,14 @@
-function Board(numPlayers) {
+function Board() {
 
     PIXI.Container.call(this);
 
     var bg = new PIXI.extras.TilingSprite(PIXI.Texture.fromFrame('bg.jpg'), 800, 600);
     this.addChild(bg);
 
+    this.numPlayers = 0;
     this.players = [];
     this.colors = ["blue", "green", "orange", "purple", "red", "yellow", "cream"];
     Utils.shuffleArray(this.colors);
-
-    for (var i = 0; i < numPlayers; ++i) {
-
-    	var player = new Player(this.colors.pop(), i);
-
-    	player.x = 400 - player.width / 2 + 200 * Math.cos(2 * Math.PI * i * 1 / numPlayers);
-    	player.y = 300 + 150 * Math.sin(2 * Math.PI * i * 1 / numPlayers);
-
-    	this.addChild(player);
-
-    	this.players.push(player);
-
-    	player.on('incremented', this.playerIncremented.bind(this));
-    	player.on('dudo', this.playerSaidDudo.bind(this));
-    	player.on('palifico', this.playerIsPalifico.bind(this));
-    	player.on('eliminated', this.playerEliminated.bind(this));
-    }
 
     this.gameRunning = false; // est-ce que la partie à commencer ? C'est à dire que les dés ont été mélangé.
     this.dicesInGame = 0; // nombre de dés de tous les joueurs combinés
@@ -36,6 +20,24 @@ function Board(numPlayers) {
 }
 
 Board.prototype = Object.create(PIXI.Container.prototype);
+
+Board.prototype.addPlayer = function(player) {
+
+	player.reset();
+	player.setColor(this.colors.pop(), this.players.length + 1);
+
+	player.x = 400 - player.width / 2 + 200 * Math.cos(2 * Math.PI * this.players.length * 1 / this.numPlayers);
+	player.y = 300 + 150 * Math.sin(2 * Math.PI * this.players.length * 1 / this.numPlayers);
+
+	this.addChild(player);
+
+	this.players.push(player);
+
+	player.on('incremented', this.playerIncremented.bind(this));
+	player.on('dudo', this.playerSaidDudo.bind(this));
+	player.on('palifico', this.playerIsPalifico.bind(this));
+	player.on('eliminated', this.playerEliminated.bind(this));
+}
 
 Board.prototype.rollDice = function() {
 
@@ -147,6 +149,8 @@ Board.prototype.playerSaidDudo = function() {
 
 		console.log("Le gagnant est " + this.players[0].name);
 
+		this.removeListenersForPlayer(this.players[0]);
+
 		this.emit('winner', this.players[0]);
 	}
 
@@ -161,5 +165,12 @@ Board.prototype.playerIsPalifico = function(player) {
 
 Board.prototype.playerEliminated = function(player) {
 
+	this.removeListenersForPlayer(player);
+
 	this.players.splice(this.players.indexOf(player), 1);
+}
+
+Board.prototype.removeListenersForPlayer = function(player) {
+
+	player.removeAllListeners();
 }
