@@ -70,6 +70,7 @@ Board.prototype.playerIncremented = function(evt) {
 	// on vérifie que c'est uniquement la valeur des dés ou le nombre de dés qui a augmenté
 	// on gère également le cas du premier joueur, du palifico et des pacos.
 
+	if (evt.diceValue == undefined || evt.numDices == undefined || evt.diceValue < 1 || evt.diceValue > 6 || evt.numDices < 1)
 		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles: " + evt.numDices + " dés de valeur " + evt.diceValue);
 
 	if (this.numDices == 0 && evt.diceValue == 1 && !this.palificoPlayer)
