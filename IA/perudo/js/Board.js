@@ -70,7 +70,7 @@ Board.prototype.playerIncremented = function(evt) {
 	// on vérifie que c'est uniquement la valeur des dés ou le nombre de dés qui a augmenté
 	// on gère également le cas du premier joueur, du palifico et des pacos.
 
-	if (this.numDices == 0 && evt.diceValue == 1)
+	if (this.numDices == 0 && evt.diceValue == 1 && !this.palificoPlayer)
 		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles, il a commencé avec des paco");
 
 	else if (!this.usingPaco && this.numDices != 0 && evt.numDices > this.numDices && evt.diceValue > this.diceValue)
