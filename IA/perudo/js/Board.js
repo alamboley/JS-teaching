@@ -54,7 +54,8 @@ Board.prototype.rollDice = function() {
 			++this.dicesInGame;
 	}
 
-	console.log("Il y a " + this.dicesInGame + " dés en jeu");
+	if (Main.showLog)
+		console.log("Il y a " + this.dicesInGame + " dés en jeu");
 }
 
 Board.prototype.play = function() {
@@ -71,25 +72,25 @@ Board.prototype.playerIncremented = function(evt) {
 	// on gère également le cas du premier joueur, du palifico et des pacos.
 
 	if (evt.diceValue == undefined || evt.numDices == undefined || evt.diceValue < 1 || evt.diceValue > 6 || evt.numDices < 1)
-		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles: " + evt.numDices + " dés de valeur " + evt.diceValue);
+		throw "le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles: " + evt.numDices + " dés de valeur " + evt.diceValue;
 
 	if (this.numDices == 0 && evt.diceValue == 1 && !this.palificoPlayer)
-		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles, il a commencé avec des paco");
+		throw "le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles, il a commencé avec des paco";
 
 	else if (!this.usingPaco && this.numDices != 0 && evt.numDices > this.numDices && evt.diceValue > this.diceValue)
-		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles, il a augmenté le nombre de dés et la valeur des dés");
+		throw "le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles, il a augmenté le nombre de dés et la valeur des dés";
 
 	else if (!this.usingPaco && evt.diceValue != 1 && (evt.numDices < this.numDices || evt.diceValue < this.diceValue))
-		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles, il a diminué la valeur des dés ou leurs nombres");
+		throw "le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles, il a diminué la valeur des dés ou leurs nombres";
 
 	else if (this.palificoPlayer && this.numDices != 0 && evt.diceValue > this.diceValue)
-		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles, alors qu'un joueur est palifico il a augmenté la valeur des dés");
+		throw "le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles, alors qu'un joueur est palifico il a augmenté la valeur des dés";
 
 	else if (!this.usingPaco && evt.diceValue == 1 && evt.numDices < Math.ceil(this.numDices / 2))
-		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles, il propose de passer sur les paco sans annoncer suffisament de dés");
+		throw "le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles, il propose de passer sur les paco sans annoncer suffisament de dés";
 
 	else if (this.usingPaco && evt.diceValue != 1 && evt.numDices < 2 * this.numDices + 1)
-		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles, alors qu'un paco est en cours, il a changé la valeur sans augmenter suffisament le nombre de dés");
+		throw "le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles, alors qu'un paco est en cours, il a changé la valeur sans augmenter suffisament le nombre de dés";
 
 	else if ((evt.numDices > this.numDices || evt.diceValue > this.diceValue) || (evt.diceValue == 1 && !this.usingPaco)) {
 
@@ -104,13 +105,18 @@ Board.prototype.playerIncremented = function(evt) {
 			this.playerTurn = 0;
 
 	} else
-		console.log("le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles: " + evt.numDices + " dés de valeur " + evt.diceValue);
+		throw "le joueur " + this.players[this.playerTurn].name + " a fait une proposition qui ne respecte pas les règles: " + evt.numDices + " dés de valeur " + evt.diceValue;
 }
 
 Board.prototype.playerSaidDudo = function() {
 
-	console.log(this.players[this.playerTurn].name + " dit dudo !");
+	if (Main.showLog)
+		console.log(this.players[this.playerTurn].name + " dit dudo !");
+
 	this.players[this.playerTurn].showDudo();
+
+	if (this.diceValue == 0 && this.numDices == 0)
+		throw "un joueur a démarré avec un dudo ?";
 
 	// on compte le nombre de dés de la valeur correspondante
 	var numDices = 0;
@@ -119,14 +125,16 @@ Board.prototype.playerSaidDudo = function() {
 			if (this.players[i].dices[j] == this.diceValue || (!this.palificoPlayer && this.players[i].dices[j] == 1))
 				++numDices;
 
-	console.log("il y a " + numDices + " dé(s) de " + this.diceValue);
+	if (Main.showLog)
+		console.log("il y a " + numDices + " dé(s) de " + this.diceValue);
 
 	this.palificoPlayer = false; // à la fin de la partie, on suppose qu'il n'y a plus de palifico, si c'est le cas ça serait fait automatiquement via lostDice(); 
 
 	var lostPlayerIndex = 0;
 	if (numDices < this.numDices) {
 
-		console.log("le nombre de dés est inférieur au nombre annoncé !");
+		if (Main.showLog)
+			console.log("le nombre de dés est inférieur au nombre annoncé !");
 		// le précédent joueur va perdre un dé.
 
 		if (this.playerTurn == 0)
@@ -136,7 +144,8 @@ Board.prototype.playerSaidDudo = function() {
 
 	} else {
 
-		console.log("il y a au moins le nombre de dés annoncé !");
+		if (Main.showLog)
+			console.log("il y a au moins le nombre de dés annoncé !");
 		// le joueur courant perd un dé;
 
 		lostPlayerIndex = this.playerTurn;
@@ -150,7 +159,8 @@ Board.prototype.playerSaidDudo = function() {
 
 	if (this.players.length == 1) {
 
-		console.log("Le gagnant est " + this.players[0].name);
+		if (Main.showLog)
+			console.log("Le gagnant est " + this.players[0].name);
 
 		this.removeListenersForPlayer(this.players[0]);
 

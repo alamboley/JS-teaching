@@ -1,6 +1,14 @@
 function APlayer() {
 
     PIXI.Container.call(this);
+
+    this.totalNumVictories = 0;
+    this.totalNumGames = 0;
+    this.numGames2P = 0;
+    this.numGames3P = 0;
+    this.numGames4P = 0;
+    this.numGames5P = 0;
+    this.numGames6P = 0;
 }
 
 APlayer.prototype = Object.create(PIXI.Container.prototype);
@@ -81,23 +89,28 @@ APlayer.prototype.rollDice = function() {
 			this.isPalifico = false;
 	}
 
-	console.log(this.name + " dés : " + this.dices);
+	if (Main.showLog)
+		console.log(this.name + " dés : " + this.dices);
 }
 
 APlayer.prototype.lostDice = function() {
 
-	console.log(this.name + " a perdu un dé");
+	if (Main.showLog)
+		console.log(this.name + " a perdu un dé");
+
 	--this.numDices;
 
 	if (this.numDices == 1) {
 
-		console.log(this.name + " est Palifico");
+		if (Main.showLog)
+			console.log(this.name + " est Palifico");
 
 		this.emit('palifico', this);
 
 	} else if (this.numDices == 0) {
 
-		console.log(this.name + " est éliminé");
+		if (Main.showLog)
+			console.log(this.name + " est éliminé");
 
 		this.emit('eliminated', this);
 
