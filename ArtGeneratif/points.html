@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Art Génératif</title>
+    <style>
+        body {
+            margin:0;
+            padding:0;
+        }
+    </style>
+</head>
+<body>
+    <script type="text/javascript" src="../lib/pixi.js"></script>
+
+    <script type="text/javascript">
+
+        var renderer = PIXI.autoDetectRenderer(800, 600, {backgroundColor:0x000000});
+        document.body.appendChild(renderer.view);
+
+        var stage = new PIXI.Container();
+
+        var points = [];
+        for (var i = 0; i < 50; ++i)
+        {
+            var pt = new PIXI.Graphics();
+            pt.beginFill(0xFFFFFF, 0.8);
+            pt.drawCircle(0, 0, 2);
+            pt.x = Math.random() * 800;
+            pt.y = Math.random() * 600;
+            pt.endFill();
+            stage.addChild(pt);
+
+            points.push(pt);
+        }
+
+        var line = new PIXI.Graphics();
+        line.lineStyle(1, 0xFFFFFF, 0.1);
+
+        points.forEach(pt =>
+        {
+            points.forEach(targetPoint =>
+            {
+                if (pt != targetPoint)
+                {
+                    line.moveTo(pt.x, pt.y);
+                    line.lineTo(targetPoint.x, targetPoint.y);
+                }
+            });
+        });
+
+        line.endFill();
+        stage.addChild(line);
+
+        animate();
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            renderer.render(stage);
+        }
+
+
+    </script>
+</body>
+</html>
